@@ -637,7 +637,7 @@ ${ assist.assistPanel() }
           <h4>${_('Properties')}</h4>
           <div class="control-group">
             <label><div>${ _('Mappers') }</div>
-              <input type="number" class="form-control input-small" data-bind="value: numMappers, valueUpdate: 'afterkeydown'">
+              <input type="number" class="form-control input-small" data-bind="value: numMappers, valueUpdate: 'afterkeydown'" min="1">
             </label>
           </div>
           <div class="card-body">
@@ -1541,6 +1541,7 @@ ${ assist.assistPanel() }
 
       self.format = ko.observable();
       self.columns = ko.observableArray();
+      self.sqoopUnsupportedDatatypes = ko.observableArray();
 
       // UI
       self.rdbmsEditor = ko.observable(false);
@@ -1823,6 +1824,7 @@ ${ assist.assistPanel() }
           self.source.sampleCols(resp.sample_cols ? resp.sample_cols : resp.columns);
           self.source.sample(resp.sample);
           self.destination.columns(resp.columns);
+          self.destination.sqoopUnsupportedDatatypes(resp.unsupported_datatypes)
           self.isGuessingFieldTypes(false);
         }).fail(function (xhr, textStatus, errorThrown) {
           $(document).trigger("error", xhr.responseText);

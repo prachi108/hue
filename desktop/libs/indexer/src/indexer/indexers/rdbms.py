@@ -80,7 +80,6 @@ def get_drivers(request):
   return JsonResponse(format_)
 
 def run_sqoop(request, source, destination, start_time):
-  password_file_path = request.fs.get_home_dir() + '/sqoop/'
   rdbms_mode = source['rdbmsMode']
   rdbms_name = source['rdbmsType']
   rdbms_database_name = source['rdbmsDatabaseName']

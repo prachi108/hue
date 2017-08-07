@@ -160,7 +160,8 @@ def guess_field_types(request):
         "columns": [
             Field(col['name'], HiveFormat.FIELD_TYPE_TRANSLATE.get(col['type'], 'string')).to_dict()
             for col in table_metadata
-        ]
+        ],
+        "unsupported_datatypes": [{'oracle':['bfile', 'long raw', 'mlslabel', 'urowid', 'xmltype']}, {'mysql':[]}, {'postgresql':[]}, {'teradata':[]}]
     }
 
   return JsonResponse(format_)
