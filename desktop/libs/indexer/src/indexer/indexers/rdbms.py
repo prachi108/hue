@@ -17,6 +17,7 @@
 
 import json
 import logging
+import os.path
 import uuid
 
 from django.contrib.auth.models import User
@@ -32,6 +33,8 @@ from notebook.conf import get_ordered_interpreters
 from notebook.connectors.jdbc import Assist as JdbcAssist
 from notebook.connectors.rdbms import Assist
 from notebook.models import make_notebook
+
+import beeswax.conf
 
 
 LOG = logging.getLogger(__name__)
@@ -231,6 +234,13 @@ def run_sqoop(request, source, destination, start_time):
         }
       statement = _splitby_column_check(statement, destination_splitby_column)
   elif destination_type == 'table':
+    '''
+    _HIVE_SITE_PATH = os.path.join(beeswax.conf.HIVE_CONF_DIR.get(), 'hive-site.xml')
+    hive_file_path = request.fs.join(request.fs.get_home_dir() + '/sqoop/', 'hive-site.xml')
+    request.fs.do_as_user(request.user, request.fs.create, hive_file_path, overwrite=True, permission=0700, data=smart_str(file(_HIVE_SITE_PATH, 'r').read()))
+    lib_files.append({'path': hive_file_path, 'type': 'xml'})
+    '''
+    lib_files.append({'path': '/user/admin/sqoop/hive-site.xml', 'type': 'jar'})
     if rdbms_all_tables_selected:
       targetDir = request.fs.fs_defaultfs + destination_name
       success_url = '/filebrowser/view/' + destination_name
